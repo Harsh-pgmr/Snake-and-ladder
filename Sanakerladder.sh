@@ -8,6 +8,11 @@ clear
 
 echo "Welcome to Snake and ladder"
 START_POSITION=0
+WINNING_POSITION=100
+
+
+newPosition=0
+prevPosition=0
 
 function rollDie() {
         res=$(( RANDOM % 6 + 1 ))
@@ -21,25 +26,33 @@ function option() {
 }
 
 function playerOption() {
-        while [[ $START_POSITION -lt 101 ]]
+        while [[ $newPosition -lt $WINNING_POSITION ]]
         do
                 operation=$( option )
                 case $operation in
                         1)
-                                START_POSITION=0;;
+                                prevPosition=$newPosition
+                                newPosition=$newPosition;;
                         2)
-                                START_POSITION=$(( $START_POSITION + $( rollDie ) ));;
-                        3)
-                                START_POSITION=$(( $START_POSITION- $( rollDie ) ))
-                                if [[ $START_POSITION -lt 0 ]]
+                                prevPosition=$newPosition
+                                newPosition=$(( $newPosition + $( rollDie ) ))
+                                if [[ $newPosition -gt $WINNING_POSITION ]]
                                 then
-                                        START_POSITION=0
+                                        newPosition=$prevPosition
+                                fi;;
+                        3)
+                                prevPosition=$newPosition
+                                newPosition=$(( $newPosition - $( rollDie ) ))
+                                if [[ $newPosition -lt  0 ]]
+                                then
+                                        newPosition=0
                                 fi;;
                 esac
         done
-        echo $START_POSITION
+        echo $newPosition
 }
 echo "Player has moved to " $(playerOption) "position"
+
 
 
 
