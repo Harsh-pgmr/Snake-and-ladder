@@ -1,3 +1,4 @@
+  GNU nano 4.9.2                                                                                                                                                                                                            snakeLadder.sh
 #!/bin/bash
 clear
 
@@ -13,6 +14,7 @@ WINNING_POSITION=100
 
 newPosition=0
 prevPosition=0
+diceRolledCount=0
 
 function rollDie() {
         res=$(( RANDOM % 6 + 1 ))
@@ -36,22 +38,27 @@ function playerOption() {
                         2)
                                 prevPosition=$newPosition
                                 newPosition=$(( $newPosition + $( rollDie ) ))
+                                (( diceRolledCount++ ))
                                 if [[ $newPosition -gt $WINNING_POSITION ]]
                                 then
                                         newPosition=$prevPosition
-                                fi;;
+                                fi
+                                echo "Position after Dice rolled $newPosition";;
                         3)
                                 prevPosition=$newPosition
                                 newPosition=$(( $newPosition - $( rollDie ) ))
+                                (( diceRolledCount++ ))
                                 if [[ $newPosition -lt  0 ]]
                                 then
                                         newPosition=0
-                                fi;;
+                                fi
+                                echo "Position after Dice rolled $newPosition";;
                 esac
         done
-        echo $newPosition
+        echo "Dice rolled $diceRolledCount"
 }
 echo "Player has moved to " $(playerOption) "position"
+
 
 
 
